@@ -39,6 +39,39 @@ function Task() {
             ))
           }
         </S.TypeIcons>
+
+        <S.Input>
+          <span>Titulo</span>
+          <input type="text" placeholder='Titulo da tarefa'/>
+        </S.Input>  
+        
+        <S.TextArea>
+          <span>Titulo</span>
+          <textarea rows={5} placeholder="Detalhes da tarefa..."/>
+        </S.TextArea>  
+
+        <S.Input>
+          <span>Data</span>
+          <input type="date" placeholder='Titulo da tarefa'/>
+        </S.Input>  
+
+        <S.Input>
+          <span>Hora</span>
+          <input type="time" placeholder='Titulo da tarefa'/>
+        </S.Input> 
+
+        <S.Options>
+          <div>
+            <input type="checkbox" />
+            <span>CONCLUÍDO</span>
+          </div>
+          <button type="button">EXCLUIR</button>
+        </S.Options> 
+        
+        <S.Save>
+          <button type="button">SALVAR</button>
+        </S.Save>
+
       </S.Form>
               
       <Footer/>
