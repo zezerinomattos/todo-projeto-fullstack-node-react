@@ -36,8 +36,14 @@ export const Title = styled.div`
 
 export const Content = styled.div`
     width: 100%;
+    margin-bottom: 70px;
     
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    a{
+        text-decoration: none;
+        color: #000;
+    }
 `

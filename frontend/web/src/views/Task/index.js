@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import { format } from 'date-fns';
+
 import * as S from './styles';
+
 
 import api from '../../services/api';
 
@@ -8,10 +13,12 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import TypeIcons from '../../utils/typeIcons';
 
-function Task() {
+function Task({_id}) {
+  const [navigate, setNavigate] = useState(false);
+  const {id} = useParams();
   const [lateCount, setLateCound] = useState();
   const [type, setType] = useState();
-  const [id, setId] = useState();
+  //const [id, setId] = useState();
   const [done, setDone] = useState(false); //por padrao ele está iniciando com false
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
@@ -26,24 +33,76 @@ function Task() {
     })
   }
 
+  async function LoadTaskDetails(){
+    await api.get(`/task/${id}`)
+    .then(response =>{
+      setType(response.data.type)
+      setDone(response.data.done)
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      setDate(format(new Date(response.data.when), 'yyyy-MM-dd'))
+      setHour(format(new Date(response.data.when), 'HH:mm'))
+    })
+  }
+
   async function Save(){
-    await api.post('/task', {
-      macaddress,
-      type,
-      title,
-      description,
-      when: `${date}T${hour}:00.000` //Estou deixando a hora e data no formato do MONGO
-    }).then(() =>
-      alert('TAREFA CADASTRADA COM SUCESSO!')
-    )
+    //Validação dos dados
+    if(!title){
+      return alert("Você precisa informar o titulo da tarefa!")
+    }else if(!description){
+      return alert("Você precisa informar o descrição da tarefa!")
+    }else if(!type){
+      return alert("Você precisa selecionar o tipo da tarefa!")
+    }else if(!date){
+      return alert("Você precisa definir a data da tarefa!")
+    }else if(!hour){
+      return alert("Você precisa definir a hora da tarefa!")
+    }
+
+    if(id){
+      await api.put(`/task/${id}`,{
+        macaddress,
+        done,
+        type,
+        title,
+        description,
+        when: `${date}T${hour}:00.000` //Estou deixando a hora e data no formato do MONGO
+      }).then(() =>
+        alert('TAREFA CADASTRADA COM SUCESSO!'),
+        setNavigate(true)
+      )
+    }else{
+      await api.post('/task', {
+        macaddress,
+        type,
+        title,
+        description,
+        when: `${date}T${hour}:00.000` //Estou deixando a hora e data no formato do MONGO
+      }).then(() =>
+        alert('TAREFA CADASTRADA COM SUCESSO!'),
+        setNavigate(true)
+      )
+    }
+  }
+
+  async function Remove(){
+    const res = window.confirm('Deseja realmente remover a tarefa?');
+    if(res == true){
+      await api.delete(`/task/${id}`)
+        .then(() => setNavigate(true));
+    }
   }
 
   useEffect(() => {
     lateVerify();
+    LoadTaskDetails();
   }, [])
 
   return (
     <S.Container>
+
+      {navigate && <Navigate to="/" />}
+
       <Header lateCount={lateCount}/>
 
       <S.Form>
@@ -84,7 +143,7 @@ function Task() {
             <input type="checkbox" checked={done} onChange={() => setDone(!done)}/>
             <span>CONCLUÍDO</span>
           </div>
-          <button type="button">EXCLUIR</button>
+          { id && <button type="button" onClick={Remove}>EXCLUIR</button>}
         </S.Options> 
         
         <S.Save>
