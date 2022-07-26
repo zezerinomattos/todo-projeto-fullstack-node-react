@@ -7,6 +7,7 @@ import * as S from './styles';
 
 
 import api from '../../services/api';
+import isConnected from '../../utils/isConnected';
 
 //Nossos Componentes
 import Header from '../../components/Header';
@@ -23,9 +24,8 @@ function Task({_id}) {
   const [description, setDescription] = useState();
   const [date, setDate] = useState();
   const [hour, setHour] = useState();
-  const [macaddress, setMacaddress] = useState('11:11:11:11:11:11');
-     
-
+  
+  
   async function LoadTaskDetails(){
     await api.get(`/task/${id}`)
     .then(response =>{
@@ -54,7 +54,7 @@ function Task({_id}) {
 
     if(id){
       await api.put(`/task/${id}`,{
-        macaddress,
+        macaddress: isConnected,
         done,
         type,
         title,
@@ -66,7 +66,7 @@ function Task({_id}) {
       )
     }else{
       await api.post('/task', {
-        macaddress,
+        macaddress: isConnected,
         type,
         title,
         description,
@@ -87,6 +87,9 @@ function Task({_id}) {
   }
 
   useEffect(() => {
+    if(!isConnected){
+      setNavigate(true);
+    }
     LoadTaskDetails();
   }, [])
 

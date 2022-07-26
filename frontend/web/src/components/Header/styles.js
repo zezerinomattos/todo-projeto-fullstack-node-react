@@ -74,4 +74,15 @@ export const RightSide = styled.div`
         color: #FFF
     }
 
+    button{
+        font-size: 16px;
+        color: #FFF;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        &:hover{
+            color: #EE6B26;
+        }
+    }
+
 `
