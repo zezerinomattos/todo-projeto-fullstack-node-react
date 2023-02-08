@@ -1,6 +1,6 @@
 # Projeto Full Stack Node.js + React.js + React Native
 
-###Este Projeto é referente ao curso de Full Stack que estou fazendo, Projeto Completo: XD, NodeJs, MongoDB, React Native e React
+Este Projeto é referente ao curso de Full Stack que estou fazendo, Projeto Completo: XD, NodeJs, MongoDB, React Native e React. <br/>
 
 Este é um projeto Completo, o qual vai abordar todas as etapas de construção de uma API criada em Node.js. <br/>
 A hospedagem dos dados fica por conta do MongoBD. <br />
